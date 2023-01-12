@@ -1,0 +1,43 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: build-pipeline
+spec:
+  workspaces:
+    - shared-workspace
+    - maven-settings
+  tasks:
+    - name: fetch-repository
+      taskRef:
+        kind: ClusterTask
+        name: git-clone
+      workspaces:
+        - name: output
+          workspace: shared-workspace
+      params:
+        - name: url
+          value: https://github.com/rohit-taneja-redhat/tekton-is-groovy-pipeline
+        - name: revision
+          value: main
+        - name: deleteExisting
+          value: "true"
+    - name: build-push-image
+      taskRef:
+        kind: ClusterTask
+        name: maven
+      runAfter:
+        - fetch-repository
+      params:
+        - name: MAVEN_IMAGE
+          value: registry.access.redhat.com/ubi8/openjdk-11
+        - name: CONTEXT_DIR
+          value: .
+        - name: GOALS
+          value:
+            - -DskipTests=true
+            - package
+      workspaces:
+        - name: maven-settings
+          workspace: maven-settings
+        - name: source
+          workspace: shared-workspace
