@@ -29,7 +29,7 @@ spec:
             - '-DskipTests'
             - package
             - '-Dquarkus.container-image.build=true'
-	        - '-Dquarkus.container-image.push=true'
+	    - '-Dquarkus.container-image.push=true'
             - '-Dquarkus.container-image.group=tekton-is-groovy'
             - '-Dquarkus.container-image.registry=image-registry.openshift-image-registry.svc:5000'
             - '-Dquarkus.container-image.name=tekton-is-groovy'
