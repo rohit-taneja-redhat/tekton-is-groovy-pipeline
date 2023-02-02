@@ -1,0 +1,13 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: tekton-is-groovy-service
+spec:
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+  selector:
+    app: groovy
+  type: ClusterIP
+  sessionAffinity: None
